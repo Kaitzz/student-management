@@ -8,6 +8,9 @@ import com.example.student_management.repository.StudentRepository;
 import com.example.student_management.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,6 +44,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public StudentDto updateStudent(Long studentId, StudentDto updatedStudent) {
 
         Student student = studentRepository.findById(studentId).orElseThrow(
