@@ -1,8 +1,8 @@
 package com.example.student_management.controller;
 
 import com.example.student_management.dto.StudentDto;
-import com.example.student_management.entity.Student;
 import com.example.student_management.service.StudentService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +17,9 @@ public class StudentController {
 
     private StudentService studentService;
 
-    // Build Add Student REST API
+    // Add Student REST API
     @PostMapping
-    public ResponseEntity<StudentDto> createStudent(@RequestBody StudentDto studentDto){
+    public ResponseEntity<StudentDto> createStudent(@Valid @RequestBody StudentDto studentDto){
         StudentDto savedStudent = studentService.createStudent(studentDto);
         return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
     }
@@ -45,10 +45,10 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
-    // Build Update Student REST API
+    // Update Student REST API
     @PutMapping("{id}")
     public ResponseEntity<StudentDto> updateStudent(@PathVariable("id") Long studentId,
-                                                    @RequestBody StudentDto updatedStudent){
+                                                    @Valid @RequestBody StudentDto updatedStudent){
         StudentDto studentDto = studentService.updateStudent(studentId, updatedStudent);
         return ResponseEntity.ok(studentDto);
     }
