@@ -24,17 +24,24 @@ public class StudentController {
         return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
     }
 
-    // Build Get Student REST API
+    // Get Student REST API
     @GetMapping("{id}")
     public ResponseEntity<StudentDto> getStudentById(@PathVariable("id") Long studentID){
         StudentDto studentDto = studentService.getStudentById(studentID);
         return ResponseEntity.ok(studentDto);
     }
 
-    // Build Get All Students REST API
+    // Get All Students (With Optional Firstname Filter) REST API
     @GetMapping
-    public ResponseEntity<List<StudentDto>> getAllStudents(){
+    public ResponseEntity<List<StudentDto>> getAllStudents(@RequestParam(required = false) String firstName){
         List<StudentDto> students = studentService.getAllStudents();
+
+        if (firstName != null) {
+            students = students.stream()
+                    .filter(student -> student.getFirstName().equalsIgnoreCase(firstName))
+                    .toList();
+        }
+
         return ResponseEntity.ok(students);
     }
 
